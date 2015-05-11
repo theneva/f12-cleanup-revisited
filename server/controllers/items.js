@@ -1,11 +1,12 @@
 var router = require('express').Router();
 
-router.get('/', function(req, res) {
-    return res.json([
-        {name: 'Urge Intense', owner: 'Theneva'},
-        {name: 'Ananasbrus', owner: 'Theneva'},
-        {name: 'ngResource', owner: 'theknarf'}
-    ]);
+var Item = require('../models/item');
+
+router.get('/', function (req, res) {
+    Item.find(function (err, items, next) {
+        if (err) return next(err);
+        return res.json(items);
+    });
 });
 
 module.exports = router;
