@@ -1,0 +1,10 @@
+{
+  "name": "testing",
+  "scripts": {
+    "postinstall": "cd server && npm install"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.4"
+  }
+}
