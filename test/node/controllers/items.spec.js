@@ -7,6 +7,7 @@ var controller = require('../../../server/controllers/items');
 app.use('/api/items', controller);
 
 var Item = require('../../../server/models/item');
+var User = require('../support/user');
 
 describe('controllers.items', function () {
     it('should exist', function () {
@@ -20,21 +21,32 @@ describe('controllers.items', function () {
             {name: 'ngResource', owner: 'theknarf'}
         ];
 
+        var user;
+
         beforeEach(function (done) {
-            Item.create(expectedItems, done);
+            Item.create(expectedItems, function (err) {
+                if (err) throw err;
+                User.create('testusername', 'ananas1234', function (err, createdUser) {
+                    if (err) throw err;
+                    user = createdUser;
+                    done();
+                });
+            });
         });
 
         it('responds with proper json', function (done) {
             request(app)
                 .get('/api/items')
+                .set('x-auth', user.token)
                 .expect('Content-Type', /json/, done);
         });
 
         it('has ' + expectedItems.length + ' items', function (done) {
             request(app)
                 .get('/api/items')
+                .set('x-auth', user.token)
                 .expect(200)
-                .expect(function(response) {
+                .expect(function (response) {
                     var items = response.body;
                     expect(items).to.have.length(3);
                 })
@@ -42,7 +54,10 @@ describe('controllers.items', function () {
         });
 
         afterEach(function (done) {
-            Item.remove({}, done);
+            Item.remove({}, function (err) {
+                if (err) throw err;
+                User.remove({}, done);
+            });
         });
     });
 });

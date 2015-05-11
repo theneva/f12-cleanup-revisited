@@ -4,7 +4,9 @@
     "postinstall": "cd server && npm install"
   },
   "devDependencies": {
+    "bcrypt": "^0.8.3",
     "chai": "^2.3.0",
+    "jwt-simple": "^0.3.0",
     "mocha": "^2.2.4",
     "supertest": "^0.15.0"
   }
