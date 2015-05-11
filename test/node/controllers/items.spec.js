@@ -3,17 +3,19 @@ var expect = require('chai').expect;
 var request = require('supertest');
 var app = require('express')();
 
-var controller = require('../../../server/controllers/items');
-app.use('/api/items', controller);
+var router = require('../../../server/controllers');
+app.use('/api', router);
 
 var Item = require('../../../server/models/item');
 var User = require('../support/user');
 
-describe('controllers.items', function () {
+describe('controllers.index', function () {
     it('should exist', function () {
-        expect(controller).to.exist;
+        expect(router).to.exist;
     });
+});
 
+describe('controllers.items', function () {
     describe('GET /api/items', function () {
         var expectedItems = [
             {name: 'Urge Intense', owner: 'Theneva'},
